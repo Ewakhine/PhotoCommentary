@@ -2,19 +2,13 @@
 using UnityEngine.UI;
 
 // Place this script on a GameObject with those named children :
-// - Comment Panel
+// - Large Panel
 // -- PinClose Comment Button
 // - Mini Panel
-public class Comment : MonoBehaviour {
-
-    GameObject largePanel;
-    GameObject miniPanel;
+public class Comment : TwoSizesPanel {
+    
     Button pinCloseButton;
-
-    bool _isInitCompleted = false;
-
-    bool _isMiniPanelShowed;
-    bool _isLargePanelShowed;
+    
     bool _isCommentPined;
 
 ///////////////////////////////////////////////////////////////
@@ -40,9 +34,8 @@ public class Comment : MonoBehaviour {
 ///////////////////////////////////////////////////////////////
 /// PRIVATE FUNCTIONS /////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
-    void Init() {
-        largePanel = transform.Find("Comment Panel").gameObject;
-        miniPanel = transform.Find("Mini Panel").gameObject;
+    protected override void Init() {
+        base.Init();
         pinCloseButton = largePanel.transform.Find("PinClose Comment Button").GetComponent<Button>();
 
         Debug.Log(this.name + " : Init is completed");
@@ -50,35 +43,23 @@ public class Comment : MonoBehaviour {
     }
     /*********************************************************/
 
-    void CheckPanels() {
+    protected override void CheckPanels()
+    {
         bool mouseOnMiniPanel = RectTransformUtility.RectangleContainsScreenPoint(miniPanel.GetComponent<RectTransform>(), Input.mousePosition);
         bool mouseOnLargePanel = RectTransformUtility.RectangleContainsScreenPoint(largePanel.GetComponent<RectTransform>(), Input.mousePosition);
 
-        if (!_isLargePanelShowed && mouseOnMiniPanel) {
+        if (!_isLargePanelShowed && mouseOnMiniPanel)
+        {
             // Debug.Log("OPEN LARGE");
             ShowLargePanel();
             ShowMiniPanel(false);
         }
-        else if (!_isMiniPanelShowed && !mouseOnLargePanel && !_isCommentPined) {
+        else if (!_isMiniPanelShowed && !mouseOnLargePanel && !_isCommentPined)
+        {
             // Debug.Log("QUIT LARGE");
             ShowLargePanel(false);
             ShowMiniPanel();
         }
-    }
-    /*********************************************************/
-
-    void ShowLargePanel(bool a_showLargePanel = true) {
-        _isLargePanelShowed = a_showLargePanel;
-        largePanel.GetComponent<CanvasGroup>().alpha = a_showLargePanel ? 1 : 0;
-        largePanel.GetComponent<CanvasGroup>().blocksRaycasts = a_showLargePanel;
-    }
-    /*********************************************************/
-
-    void ShowMiniPanel(bool a_showMiniPanel = true) {
-        _isMiniPanelShowed = a_showMiniPanel;
-        miniPanel.GetComponent<CanvasGroup>().alpha = a_showMiniPanel ? 1 : 0;
-        miniPanel.GetComponent<CanvasGroup>().blocksRaycasts = a_showMiniPanel;
-
     }
     /*********************************************************/
 
@@ -89,7 +70,6 @@ public class Comment : MonoBehaviour {
         _isCommentPined = false;
     }
     /*********************************************************/
-
     void Btn_CloseComment() {
         pinCloseButton.GetComponent<Button>().onClick.RemoveAllListeners();
         pinCloseButton.GetComponent<Button>().onClick.AddListener(() => Btn_PinComment());
