@@ -45,7 +45,7 @@ public class Comment : MonoBehaviour {
         miniPanel = transform.Find("Mini Panel").gameObject;
         pinCloseButton = largePanel.transform.Find("PinClose Comment Button").GetComponent<Button>();
 
-        Debug.Log(this.name + " : Init is complete");
+        Debug.Log(this.name + " : Init is completed");
         _isInitCompleted = true;
     }
     /*********************************************************/
