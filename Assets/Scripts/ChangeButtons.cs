@@ -8,13 +8,13 @@ using System.Collections.Generic;
 // - Mini Panel
 public class ChangeButtons : TwoSizesPanel {
 
-    public RawImage currentPhoto;
+    public Image currentPhoto;
     int _currentIndex;
 
     Button nextButton;
     Button previousButton;
 
-    Texture[] photos;
+    Sprite[] photos;
 
 ///////////////////////////////////////////////////////////////
 /// GENERAL FUNCTIONS /////////////////////////////////////////
@@ -43,14 +43,13 @@ public class ChangeButtons : TwoSizesPanel {
         nextButton = largePanel.transform.Find("Next Button").GetComponent<Button>();
         previousButton = largePanel.transform.Find("Previous Button").GetComponent<Button>();
 
-        photos = Resources.LoadAll<Texture>("");
-        /*Debug.Log(photos.Length);
-        for (int i = 0; i < photos.Length; i++)
-            Debug.Log(photos[i].name);*/
-        if (photos.Length > 0)
-        {
+        photos = Resources.LoadAll<Sprite>("");
+        // TODO : resize image (scale)
+        if (photos.Length > 0) {
             _currentIndex = 0;
-            currentPhoto.texture = photos[_currentIndex];
+            currentPhoto.sprite = photos[_currentIndex];
+            float ratio = (float)currentPhoto.sprite.rect.width / currentPhoto.sprite.rect.height;
+            Debug.Log(ratio);
         }
 
         Debug.Log(this.name + " : Init is completed.");
@@ -61,13 +60,13 @@ public class ChangeButtons : TwoSizesPanel {
     public void Btn_NextImage() {
         if (_currentIndex < photos.Length -1)
             _currentIndex++;
-        currentPhoto.texture = photos[_currentIndex];
+        currentPhoto.sprite = photos[_currentIndex];
     }
     /*********************************************************/
     public void Btn_PreviousImage() {
         if (_currentIndex > 0 )
             _currentIndex--;
-        currentPhoto.texture = photos[_currentIndex];
+        currentPhoto.sprite = photos[_currentIndex];
     }
     /*********************************************************/
 }
